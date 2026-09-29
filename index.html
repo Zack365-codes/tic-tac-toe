@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sleek Tic-Tac-Toe Game</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Basic inline styles so it works immediately out-of-the-box */
+      body {
+        font-family: "Outfit", sans-serif;
+        background-color: #f4f7f6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .game-wrapper {
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      .game-header h1 {
+        margin: 0 0 10px 0;
+        color: #333;
+      }
+      .turn {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 20px;
+        font-weight: 500;
+      }
+      .board-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 100px);
+        grid-template-rows: repeat(3, 100px);
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+      .cell {
+        background-color: #e9ecef;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 40px;
+        font-weight: 600;
+        color: #333;
+        border-radius: 8px;
+        cursor: pointer;
+        user-select: none;
+        transition: background-color 0.2s;
+      }
+      .cell:hover {
+        background-color: #dee2e6;
+      }
+      .restart-button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-family: "Outfit", sans-serif;
+      }
+      .restart-button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="game-wrapper">
+      <div class="game-header">
+        <h1>Tic Tac Toe</h1>
+        <div class="turn">Current Turn: X</div>
+      </div>
+
+      <div class="board-grid" id="game-board">
+        <div class="cell" data-index="0"></div>
+        <div class="cell" data-index="1"></div>
+        <div class="cell" data-index="2"></div>
+        <div class="cell" data-index="3"></div>
+        <div class="cell" data-index="4"></div>
+        <div class="cell" data-index="5"></div>
+        <div class="cell" data-index="6"></div>
+        <div class="cell" data-index="7"></div>
+        <div class="cell" data-index="8"></div>
+      </div>
+
+      <button class="restart-button" id="restart-btn">Restart Game</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script>
+      // All possible winning combinations
+      let winningpattern = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+      ];
+
+      // Run code after the page loads
+      $(document).ready(function () {
+        // X starts the game
+        let currentPlayer = "X";
+
+        // true = game is running
+        let isGameActive = true;
+
+        // Runs when a cell is clicked
+        $(".cell").click(function () {
+          // Don't allow moves after game ends or on filled cells
+          if (!isGameActive || $(this).text() != "") {
+            return;
+          }
+
+          // Put X or O in the clicked cell
+          $(this).text(currentPlayer);
+
+          // Check if someone won or game is tied
+          if (checkWinner()) {
+            return;
+          }
+
+          // Switch between X and O
+          currentPlayer = currentPlayer === "X" ? "O" : "X";
+
+          // Show whose turn it is
+          $(".turn").text("Current Turn: " + currentPlayer);
+        });
+
+        // Checks for winner or tie
+        function checkWinner() {
+          let roundWon = false;
+
+          // Check every winning combination
+          for (let pattern of winningpattern) {
+            let a = $(".cell").eq(pattern[0]).text();
+            let b = $(".cell").eq(pattern[1]).text();
+            let c = $(".cell").eq(pattern[2]).text();
+
+            // If all 3 cells contain the same symbol
+            if (a != "" && a == b && b == c) {
+              roundWon = true;
+              break;
+            }
+          }
+
+          // Show winner
+          if (roundWon) {
+            $(".turn").text("Player " + currentPlayer + " Wins! 🎉");
+            isGameActive = false;
+            return true;
+          }
+
+          // Check if all cells are filled
+          let tieCheck = true;
+
+          $(".cell").each(function () {
+            if ($(this).text() == "") {
+              tieCheck = false;
+            }
+          });
+
+          // Show tie message
+          if (tieCheck) {
+            $(".turn").text("It's a Tie! 🤝");
+            isGameActive = false;
+            return true;
+          }
+
+          return false;
+        }
+
+        // Restart the game
+        $("#restart-btn").click(function () {
+          // Clear the board
+          $(".cell").text("");
+
+          // X starts again
+          currentPlayer = "X";
+
+          // Start the game
+          isGameActive = true;
+
+          // Update turn message
+          $(".turn").text("Current Turn: " + currentPlayer);
+        });
+      });
+    </script>
+
+  </body>
+</html>

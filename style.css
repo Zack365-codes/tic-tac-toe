@@ -1,0 +1,171 @@
+      :root {
+        --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        --card-bg: rgba(255, 255, 255, 0.9);
+        --card-border: rgba(226, 232, 240, 0.8);
+        --text-primary: #0f172a;
+        --text-secondary: #64748b;
+        --accent-x: #2563eb;
+        --accent-o: #db2777;
+        --cell-bg: #f1f5f9;
+        --cell-hover: #e2e8f0;
+        --shadow:
+          0 20px 25px -5px rgba(0, 0, 0, 0.05),
+          0 10px 10px -5px rgba(0, 0, 0, 0.02);
+        --radius: 1.5rem;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg-gradient: linear-gradient(135deg, #090d16 0%, #111827 100%);
+          --card-bg: rgba(17, 24, 39, 0.85);
+          --card-border: rgba(255, 255, 255, 0.07);
+          --text-primary: #f9fafb;
+          --text-secondary: #9ca3af;
+          --accent-x: #3b82f6;
+          --accent-o: #ec4899;
+          --cell-bg: #1f2937;
+          --cell-hover: #374151;
+          --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Outfit", sans-serif;
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease;
+      }
+
+      body {
+        min-height: 100vh;
+        background: var(--bg-gradient);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+      }
+
+      .game-wrapper {
+        background: var(--card-bg);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--card-border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        width: 100%;
+        max-width: 420px;
+        padding: 2.25rem;
+        text-align: center;
+      }
+
+      .game-header h1 {
+        font-size: 1.85rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.03em;
+      }
+
+      .status-box {
+        display: inline-block;
+        background: var(--cell-bg);
+        border: 1px solid var(--card-border);
+        color: var(--text-secondary);
+        padding: 0.6rem 1.4rem;
+        border-radius: 2rem;
+        font-size: 0.95rem;
+        font-weight: 500;
+        margin-bottom: 1.75rem;
+      }
+
+      .status-box span {
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+
+      .board-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 1.75rem;
+      }
+
+      .cell {
+        aspect-ratio: 1;
+        background-color: var(--cell-bg);
+        border: 2px solid var(--card-border);
+        border-radius: 1.1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2.75rem;
+        font-weight: 700;
+        cursor: pointer;
+        user-select: none;
+        transform: scale(1);
+        transition:
+          transform 0.15s ease,
+          background-color 0.15s ease,
+          border-color 0.15s ease;
+      }
+
+      .cell:hover {
+        background-color: var(--cell-hover);
+        border-color: var(--text-secondary);
+        transform: translateY(-2px);
+      }
+
+      .cell:active {
+        transform: translateY(0);
+      }
+
+      .cell.x {
+        color: var(--accent-x);
+        animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .cell.o {
+        color: var(--accent-o);
+        animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      @keyframes popIn {
+        0% {
+          transform: scale(0.5);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .restart-button {
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        color: white;
+        border: none;
+        width: 100%;
+        padding: 0.9rem;
+        border-radius: 1rem;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+        transition:
+          opacity 0.2s ease,
+          transform 0.15s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .restart-button:hover {
+        opacity: 0.95;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
+      }
+
+      .restart-button:active {
+        transform: translateY(0);
+      }
